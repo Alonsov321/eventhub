@@ -18,9 +18,10 @@ class EventHubStack(cdk.Stack):
         # AWS Academy ya tiene una VPC por defecto; la pila no la crea
         vpc = ec2.Vpc.from_lookup(self, "Vpc", is_default=True)
 
+# No se fija security_group_name (ec2.sh sí lo hacía, con eventhub-sg): CloudFormation
+     # genera un nombre único, y así el grupo se puede reemplazar y la pila desplegar dos veces.
         sg = ec2.SecurityGroup(
             self, "EventHubSg", vpc=vpc,
-            security_group_name="eventhub-sg",
             description="Permite trafico HTTP y SSH al servidor EC2",
         )
         for puerto in (80, 22):
